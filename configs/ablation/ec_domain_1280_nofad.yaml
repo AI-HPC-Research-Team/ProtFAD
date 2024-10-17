@@ -1,0 +1,75 @@
+model:
+  target: models.Model
+  params:
+    domain_dim: 1280
+    max_domain_num: 16
+    feat_dim: ${model.params.domain_dim}
+    fad_emb: False
+    domain_num: 31929
+    domain_attention: False
+    contrastive_loss: True
+
+optimizer:
+  target: torch.optim.SGD
+  params:
+    lr: 0.001
+    weight_decay: 5e-4
+    momentum: 0.9 
+  loss_fn: torch.nn.BCELoss
+
+scheduler:
+  target: torch.optim.lr_scheduler.LambdaLR
+  lr_milestones: 
+    - 300
+    - 400
+  lr_gamma: 0.1
+
+ablation_set:
+  domain_train: ''
+
+data:
+  batch_size: 32
+  workers: 8
+  train_data:
+    target: datasets.ECDataset
+    params:
+      split: 'train'
+      domain_dim: ${model.params.domain_dim}
+      domain_train: ${ablation_set.domain_train}
+  valid_data:
+    target: datasets.ECDataset
+    params:
+      split: 'valid'
+      domain_dim: ${model.params.domain_dim}
+      domain_train: ${ablation_set.domain_train}
+  test_data:
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 30
+        domain_dim: ${model.params.domain_dim}
+        domain_train: ${ablation_set.domain_train}
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 40
+        domain_dim: ${model.params.domain_dim}
+        domain_train: ${ablation_set.domain_train}
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 50
+        domain_dim: ${model.params.domain_dim}
+        domain_train: ${ablation_set.domain_train}
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 70
+        domain_dim: ${model.params.domain_dim}
+        domain_train: ${ablation_set.domain_train}
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 95
+        domain_dim: ${model.params.domain_dim}
+        domain_train: ${ablation_set.domain_train}

@@ -1,0 +1,28 @@
+model:
+  target: models.DomainEmbeddingModel
+  params:
+    num_domains: 31929
+    num_goterms: 28944
+    emb_dim: 512
+    
+optimizer:
+  target: torch.optim.Adam
+  params:
+    lr: 1e-3
+  loss_fn: torch.nn.MSELoss
+
+data:
+  batch_size: 16384
+  workers: 8
+  train_data:
+    target: datasets.IntGoDataset
+    params:
+      split: 'train'
+  valid_data:
+    target: datasets.IntGoDataset
+    params:
+      split: 'valid'
+  test_data:
+    target: datasets.IntGoDataset
+    params:
+      split: 'test'

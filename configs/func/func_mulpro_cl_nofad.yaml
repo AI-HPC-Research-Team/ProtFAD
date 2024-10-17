@@ -1,0 +1,57 @@
+model:
+  target: models.Model
+  params:
+    domain_dim: 768
+    max_domain_num: 20
+    seq_emb_dim: 1280
+    cdconv_param:
+      geometric_radii:
+        - 8.0
+        - 12.0
+        - 16.0
+        - 20.0
+      sequential_kernel_size: 25
+      kernel_channels: 
+        - 24
+      channels:
+        - 256
+        - 512
+        - 1024
+        - 2048
+      base_width: 32.0
+      embedding_dim: 256
+    fad_emb: False
+    domain_num: 31929
+    domain_attention: False
+    contrastive_loss: True
+
+optimizer:
+  target: torch.optim.SGD
+  params:
+    lr: 0.001
+    weight_decay: 5e-4
+    momentum: 0.9 
+
+scheduler:
+  target: torch.optim.lr_scheduler.LambdaLR
+  lr_milestones: 
+    - 100
+    - 300
+  lr_gamma: 0.1
+
+data:
+  batch_size: 8
+  workers: 8
+  train_data:
+    target: datasets.FuncDataset
+    params:
+      split: 'training'
+  valid_data:
+    target: datasets.FuncDataset
+    params:
+      split: 'validation'
+  test_data:
+    - target: datasets.FuncDataset
+      params:
+        split: 'testing'
+    

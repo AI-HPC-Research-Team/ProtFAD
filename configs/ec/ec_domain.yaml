@@ -1,0 +1,60 @@
+model:
+  target: models.Model
+  params:
+    domain_dim: 768
+    max_domain_num: 16
+
+optimizer:
+  target: torch.optim.SGD
+  params:
+    lr: 0.001
+    weight_decay: 5e-4
+    momentum: 0.9 
+  loss_fn: torch.nn.BCELoss
+
+scheduler:
+  target: torch.optim.lr_scheduler.LambdaLR
+  lr_milestones: 
+    - 300
+    - 400
+  lr_gamma: 0.1
+
+data:
+  batch_size: 24
+  workers: 8
+  train_data:
+    target: datasets.ECDataset
+    params:
+      split: 'train'
+      request_domain: 'exist'
+  valid_data:
+    target: datasets.ECDataset
+    params:
+      split: 'valid'
+      request_domain: 'exist'
+  test_data:
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 30
+        request_domain: 'exist'
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 40
+        request_domain: 'exist'
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 50
+        request_domain: 'exist'
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 70
+        request_domain: 'exist'
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 95
+        request_domain: 'exist'

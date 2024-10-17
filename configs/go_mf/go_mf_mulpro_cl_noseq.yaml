@@ -1,0 +1,77 @@
+model:
+  target: models.Model
+  params:
+    domain_dim: 768
+    max_domain_num: 20
+    cdconv_param:
+      geometric_radii:
+        - 8.0
+        - 12.0
+        - 16.0
+        - 20.0
+      sequential_kernel_size: 15
+      kernel_channels: 
+        - 24
+      channels:
+        - 256
+        - 512
+        - 1024
+        - 2048
+      base_width: 32.0
+      embedding_dim: 128
+    contrastive_loss: True
+    
+optimizer:
+  target: torch.optim.SGD
+  params:
+    lr: 0.001
+    weight_decay: 5e-4
+    momentum: 0.9 
+  loss_fn: torch.nn.BCELoss
+
+scheduler:
+  target: torch.optim.lr_scheduler.LambdaLR
+  lr_milestones: 
+    - 300
+    - 400
+  lr_gamma: 0.1
+
+data:
+  batch_size: 32 #24
+  workers: 8
+  train_data:
+    target: datasets.GODataset
+    params:
+      level: mf
+      split: 'train'
+  valid_data:
+    target: datasets.GODataset
+    params:
+      level: mf
+      split: 'valid'
+  test_data:
+    - target: datasets.GODataset
+      params:
+        level: mf
+        split: 'test'
+        percent: 30
+    - target: datasets.GODataset
+      params:
+        level: mf
+        split: 'test'
+        percent: 40
+    - target: datasets.GODataset
+      params:
+        level: mf
+        split: 'test'
+        percent: 50
+    - target: datasets.GODataset
+      params:
+        level: mf
+        split: 'test'
+        percent: 70
+    - target: datasets.GODataset
+      params:
+        level: mf
+        split: 'test'
+        percent: 95
