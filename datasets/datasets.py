@@ -60,7 +60,7 @@ class FoldDataset(Dataset):
         npy_dir = os.path.join(root, 'coordinates', split)
         fasta_file = os.path.join(root, split+'.fasta')
         seq_emb_dir = os.path.join(root, 'seq_embeddings')
-        domain_file = os.path.join(root, f"domain_embeddings.p")
+        domain_file = os.path.join(root, f"domain_embeddings_got.p")
         domain_dim = 768
 
         # Load the fasta file.
@@ -165,7 +165,7 @@ class FuncDataset(Dataset):
         npy_dir = os.path.join(os.path.join(root, 'coordinates'), split)
         fasta_file = os.path.join(root, 'chain_'+split+'.fasta')
         seq_emb_dir = os.path.join(root, 'seq_embeddings')
-        domain_file = os.path.join(root, f"domain_embeddings.p")
+        domain_file = os.path.join(root, f"domain_embeddings_got.p")
         domain_dim = 768
 
         # Load the fasta file.
