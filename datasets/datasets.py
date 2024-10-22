@@ -192,6 +192,7 @@ class FuncDataset(Dataset):
                 domain_embs = np.pad(domain_embs, [(0, 20-domain_num), (0, 0)])
                 domain_ids = np.pad(domain_ids, [(0, 20-domain_num)])
             else:
+                continue
                 count += 1
                 domain_num = 0
                 domain_poss = np.zeros(20)

@@ -10,6 +10,7 @@ import torch
 import torch.optim as optim
 from torch_geometric.loader import DataLoader
 from omegaconf import OmegaConf
+from tqdm import tqdm
 
 from models.metrics import fmax
 from utils import instantiate_from_config, get_obj_from_str, add_params
@@ -30,7 +31,7 @@ def parse_args():
 
 def train(epoch, dataloader, loss_fn):
 	model.train()
-	for data in dataloader:
+	for data in tqdm(dataloader):
 		optimizer.zero_grad()
 		data = data.to(device)
 		all_loss = model.get_loss(data, loss_fn)

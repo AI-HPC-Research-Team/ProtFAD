@@ -15,6 +15,7 @@ from omegaconf import OmegaConf
 from models.metrics import fmax
 from utils import instantiate_from_config, get_obj_from_str, add_params
 import utils
+from tqdm import tqdm
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ def parse_args():
 
 def train(epoch, dataloader):
 	model.train()
-	for data in dataloader:
+	for data in tqdm(dataloader):
 		data = data.to(device)
 		optimizer.zero_grad()
 
