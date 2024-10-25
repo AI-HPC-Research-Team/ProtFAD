@@ -1,18 +1,33 @@
-# Introducing domain modality for protein function prediction
+# ProtFAD
+
 This repository is for the paper 'ProtFAD: Introducing function-aware domains as implicit modality towards protein function prediction.'
 
-**Note: The data will be made public after the paper is accepted.**
+Here, we introduce **ProtFAD**, a synergistic integration approach for protein function prediction, including the function-aware domain pre-training and a domain-joint contrastive learning strategy for multi-modal representations. Our approach significantly and comprehensively outperforms the state-of-the-art methods on various benchmarks, and clearly differentiates proteins carrying distinct functions compared to the competitor. 
+
+![main](figures/main.png)
 
 
 
 ## Environment
 
-python=3.8   pytorch=1.12.1
+python=3.8   
+
+pytorch=1.12.1
 
 ```shell
 pip install torch-geometric
 pip install pandas omegaconf
 ```
+
+
+
+## Data
+
+> [!NOTE]
+>
+> The data will be made public soon.
+
+****
 
 
 
@@ -35,3 +50,17 @@ python train_fold.py -C configs/[dataset]/[dataset]_mulpro_cl.yaml
 ```
 
 [dataset] is the data name, including "fold, func".
+
+
+
+## Citation
+
+```
+@article{wang2024protfad,
+  title={ProtFAD: Introducing function-aware domains as implicit modality towards protein function perception},
+  author={Wang, Mingqing and Nie, Zhiwei and He, Yonghong and Ren, Zhixiang},
+  journal={arXiv preprint arXiv:2405.15158},
+  year={2024}
+}
+```
+
