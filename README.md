@@ -1,8 +1,6 @@
 # ProtFAD
 
-This repository is for the paper 'ProtFAD: Introducing function-aware domains as implicit modality towards protein function prediction.'
-
-Here, we introduce **ProtFAD**, a synergistic integration approach for protein function prediction, including the function-aware domain pre-training and a domain-joint contrastive learning strategy for multi-modal representations. Our approach significantly and comprehensively outperforms the state-of-the-art methods on various benchmarks, and clearly differentiates proteins carrying distinct functions compared to the competitor. 
+Here, we introduce **ProtFAD**, a synergistic integration approach for protein function prediction, including the **function-aware domain** pre-training and a **domain-joint contrastive learning** strategy for multi-modal representations. Our approach significantly and comprehensively outperforms the state-of-the-art methods on various benchmarks, and clearly differentiates proteins carrying distinct functions compared to the competitor. 
 
 ![main](figures/main.png)
 
