@@ -1,6 +1,6 @@
 # ProtFAD
 
-![arxiv](https://img.shields.io/badge/arxiv-2405.15158-red?logo=arxiv&logoColor=%23B31B1B&logoSize=auto&labelColor=red&color=gray&link=https%3A%2F%2Farxiv.org%2Fabs%2F2405.15158) 
+[![arxiv](https://img.shields.io/badge/arxiv-2405.15158-red?logo=arxiv&logoColor=%23B31B1B&logoSize=auto&labelColor=red&color=gray&link=https%3A%2F%2Farxiv.org%2Fabs%2F2405.15158)](https://arxiv.org/abs/2405.15158) 
 
 Here, we introduce **ProtFAD**, a synergistic integration approach for protein function prediction, including the **function-aware domain** pre-training and a **domain-joint contrastive learning** strategy for multi-modal representations. Our approach significantly and comprehensively outperforms the state-of-the-art methods on various benchmarks, and clearly differentiates proteins carrying distinct functions compared to the competitor. 
 
