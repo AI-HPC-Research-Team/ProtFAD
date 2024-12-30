@@ -1,0 +1,39 @@
+model:
+  target: models.Model
+  params:
+    domain_dim: 768
+    max_domain_num: 20
+    fad_emb: False
+    domain_num: 31929
+    domain_attention: False
+
+optimizer:
+  target: torch.optim.SGD
+  params:
+    lr: 0.001
+    weight_decay: 5e-4
+    momentum: 0.9 
+
+scheduler:
+  target: torch.optim.lr_scheduler.LambdaLR
+  lr_milestones: 
+    - 100
+    - 300
+  lr_gamma: 0.1
+
+data:
+  batch_size: 8
+  workers: 8
+  train_data:
+    target: datasets.FuncDataset
+    params:
+      split: 'training'
+  valid_data:
+    target: datasets.FuncDataset
+    params:
+      split: 'validation'
+  test_data:
+    - target: datasets.FuncDataset
+      params:
+        split: 'testing'
+    
