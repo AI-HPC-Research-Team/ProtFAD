@@ -7,6 +7,7 @@ import torch
 import torch.optim as optim
 from torch_geometric.loader import DataLoader
 from omegaconf import OmegaConf
+from tqdm import tqdm
 
 from models.metrics import fmax, auprc
 from utils import instantiate_from_config, get_obj_from_str, add_params
@@ -15,21 +16,13 @@ import utils
 @torch.no_grad()
 def test(dataloader):
 	model.eval()
-	# Iterate over the validation data.
-
-	probs = []
-	labels = []
-	for data in dataloader:
+	correct = 0
+	for data in tqdm(dataloader):
 		data = data.to(device)
 		with torch.no_grad():
-			prob = model(data).sigmoid().detach().cpu().numpy()
-			y = np.stack(data.y, axis=0)
-		probs.append(prob)
-		labels.append(y)
-	probs = np.concatenate(probs, axis=0)
-	labels = np.concatenate(labels, axis=0)
-
-	return fmax(probs, labels), auprc(probs, labels)
+			pred = model(data).max(1)[1]
+		correct += pred.eq(data.y).sum().item()
+	return correct / len(dataloader.dataset)
 
 # 命令行指令
 def parse_args():

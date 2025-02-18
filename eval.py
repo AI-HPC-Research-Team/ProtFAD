@@ -3,10 +3,12 @@ import argparse, os, sys, datetime, shutil, copy, time
 import pprint
 import logging
 import numpy as np
+from scipy.spatial.distance import cdist
 import torch
 import torch.optim as optim
 from torch_geometric.loader import DataLoader
 from omegaconf import OmegaConf
+from tqdm import tqdm
 
 from models.metrics import fmax, auprc
 from utils import instantiate_from_config, get_obj_from_str, add_params
@@ -15,13 +17,21 @@ import utils
 @torch.no_grad()
 def test(dataloader):
 	model.eval()
-	correct = 0
-	for data in dataloader:
+	# Iterate over the validation data.
+
+	probs = []
+	labels = []
+	for data in tqdm(dataloader):
 		data = data.to(device)
 		with torch.no_grad():
-			pred = model(data).max(1)[1]
-		correct += pred.eq(data.y).sum().item()
-	return correct / len(dataloader.dataset)
+			prob = model(data).sigmoid().detach().cpu().numpy()
+			y = np.stack(data.y, axis=0)
+		probs.append(prob)
+		labels.append(y)
+	probs = np.concatenate(probs, axis=0)
+	labels = np.concatenate(labels, axis=0)
+
+	return fmax(probs, labels), auprc(probs, labels)
 
 # 命令行指令
 def parse_args():
@@ -69,7 +79,7 @@ if __name__=="__main__":
 	model_config = OmegaConf.to_container(configs.get("model"))
 	add_params(model_config, 'num_classes', valid_dset.num_classes)
 	model = instantiate_from_config(model_config).to(device)
-    
+	
 	model_size = sum(p.numel() for p in model.parameters())
 	print("Total params: %.2fM" % (model_size/1e6))
 
@@ -86,6 +96,4 @@ if __name__=="__main__":
 	test_fmax, test_auprc = zip(*[test(dl) for dl in test_loaders])
 	print(f"f1 max: Validation: {valid_fmax:.4f}, Test: ", '\t'.join([f'{fmax:.4f}' for fmax in test_fmax]))
 	print(f"AUPRC: Validation: {valid_auprc:.4f}, Test: ", '\t'.join([f'{auc:.4f}' for auc in test_auprc]))
-
-	
 		

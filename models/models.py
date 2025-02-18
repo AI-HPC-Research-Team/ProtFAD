@@ -141,7 +141,7 @@ class Model(nn.Module):
             out = torch.cat([out, domain_feature], dim=-1)
 
         # protein cropping multimodal contrastive representation
-        if self.contrastive_loss and all_loss is not None:
+        if self.contrastive_loss and (all_loss is not None):
             with torch.no_grad():
                 self.temp.clamp_(0.001,0.5)
 
@@ -219,22 +219,10 @@ class Model(nn.Module):
         # structure feature
         if self.struct_dim > 0:
             struct_feature = self.projector_struct(self.struct_encoder(x, pos, seq, ori, batch))
-            out = torch.cat([out, struct_feature], dim=-1)
-            
-            struct_embed = self.projector_contrast(
-                F.normalize(struct_feature + 0.1 * torch.randn_like(struct_feature, dtype=struct_feature.dtype, device=struct_feature.device), dim=-1, p=2)
-            )
-            struct_embed_norm = F.normalize(struct_embed, dim=-1, p=2)
 
         # sequence feature
         if self.seq_emb_dim > 0:
             seq_feature = self.projector_seq(seq_emb)
-            out = torch.cat([out, seq_feature], dim=-1)
-            
-            seq_embed = self.projector_contrast(
-                F.normalize(seq_feature + 0.1 * torch.randn_like(seq_feature, dtype=seq_feature.dtype, device=seq_feature.device), dim=-1, p=2)
-            )
-            seq_embed_norm = F.normalize(seq_embed, dim=-1, p=2)
 
         # domain feature
         if self.domain_dim > 0:
@@ -242,15 +230,8 @@ class Model(nn.Module):
                 domain_embs = self.domain_embeddings(domain_ids)
             domain = self.domain_attention(domain_embs, domain_num, domain_poss)
             domain_feature = self.projector_domain(domain)
-            out = torch.cat([out, domain_feature], dim=-1)
-
-            # whole domain view
-            domain_embed = self.projector_contrast(
-                    F.normalize(domain_feature + 0.1 * torch.randn_like(domain_feature, dtype=domain_feature.dtype, device=domain_feature.device), dim=-1, p=2)
-                )
-            domain_embed_norm = F.normalize(domain_embed, dim=-1, p=2)
                 
-        return struct_embed, seq_embed, domain_embed
+        return seq_feature, struct_feature, domain_feature
     
 
     
