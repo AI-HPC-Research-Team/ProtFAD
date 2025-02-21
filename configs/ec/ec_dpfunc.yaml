@@ -1,0 +1,61 @@
+model:
+  target: models.DPfunc.Model
+  params:
+    inter_size: 31929
+    inter_hid: 1280
+    graph_size: 1280
+    graph_hid: 1280
+    head: 4
+    r: 8.0
+    sequential_kernel_size: 15
+    kernel_channels: 
+      - 32  
+    base_width: 16.0
+
+optimizer:
+  target: torch.optim.SGD
+  params:
+    lr: 0.001
+    weight_decay: 5e-4
+    momentum: 0.9 
+  loss_fn: torch.nn.BCELoss
+
+scheduler:
+  target: torch.optim.lr_scheduler.LambdaLR
+  lr_milestones: 
+    - 300
+    - 400
+  lr_gamma: 0.1
+
+data:
+  batch_size: 24
+  workers: 8
+  train_data:
+    target: datasets.ECDataset
+    params:
+      split: 'train'
+  valid_data:
+    target: datasets.ECDataset
+    params:
+      split: 'valid'
+  test_data:
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 30
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 40
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 50
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 70
+    - target: datasets.ECDataset
+      params:
+        split: 'test'
+        percent: 95

@@ -233,6 +233,35 @@ class Model(nn.Module):
                 
         return seq_feature, struct_feature, domain_feature
     
+    def split_feature(self, data):
+        x, pos, seq, ori, seq_emb, domain_num, domain_embs, domain_poss, domain_ids, batch = data.x, data.pos, data.seq, data.ori, data.seq_emb, data.domain_num, data.domain_embs, data.domain_poss, data.domain_ids, data.batch
+
+        # 获取每个蛋白质的数量
+        unique_protein_ids = torch.unique(batch)
+        protein_sizes = [torch.sum(batch == protein_id) for protein_id in unique_protein_ids]
+
+        # 计算每个蛋白质分为两半后的新batch编号
+        new_batch = torch.zeros_like(batch)
+        for i, protein_id in enumerate(unique_protein_ids):
+            indices = torch.nonzero(batch == protein_id).squeeze()  # 获取该蛋白质节点的索引
+            half_size = len(indices) // 2
+            
+            # 设置第一半batch编号
+            new_batch[indices[:half_size]] = protein_id * 2
+            # 设置第二半batch编号
+            new_batch[indices[half_size:]] = protein_id * 2 + 1
+
+        # structure feature
+        struct_feature = self.projector_struct(self.struct_encoder(x, pos, seq, ori, new_batch))
+
+        # 将结果分成两部分
+        feature1 = struct_feature[::2]  # 偶数索引
+        feature2 = struct_feature[1::2]  # 奇数索引
+
+        return feature1, feature2
+
+
+    
 
     
 class Model_MVAE(nn.Module):

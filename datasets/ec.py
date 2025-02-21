@@ -81,9 +81,11 @@ class ECDataset(Dataset):
             ori = orientation(pos)
             
             # sequence embeddings
-            seq_emb = torch.load(os.path.join(seq_emb_dir, protein_name+".pt"))['mean_representations'][33]
+            seq_file_load = torch.load(os.path.join(seq_emb_dir, protein_name+".pt"))
+            seq_emb = seq_file_load['mean_representations'][33]
+            seq_embs = seq_file_load['representations'][33]
             
-            self.data.append((protein_name, pos, ori, amino_ids.astype(int), seq_emb, domain_num, domain_embs, domain_poss, domain_ids))
+            self.data.append((protein_name, pos, ori, amino_ids.astype(int), seq_emb, seq_embs, domain_num, domain_embs, domain_poss, domain_ids))
         print(f"{split} data: total {len(self.data)} proteins, {count} proteins have no domain embeddings.")    
 
         level_idx = 1
@@ -122,7 +124,7 @@ class ECDataset(Dataset):
 
     def __getitem__(self, idx):
 
-        protein_name, pos, ori, amino, seq_emb, domain_num, domain_embs, domain_poss, domain_ids = self.data[idx]
+        protein_name, pos, ori, amino, seq_emb, seq_embs, domain_num, domain_embs, domain_poss, domain_ids = self.data[idx]
         label = np.zeros((self.num_classes,)).astype(np.float32)
         if len(self.labels[protein_name]) > 0:
             label[self.labels[protein_name]] = 1.0
@@ -148,6 +150,7 @@ class ECDataset(Dataset):
                     seq = torch.from_numpy(seq),    # [num_nodes, 1]
                     pos = torch.from_numpy(pos),    # [num_nodes, num_dimensions]
                     seq_emb = seq_emb,    # [1, 1280]
+                    seq_embs = seq_embs,    # [num_nodes, 1280]
                     #domain = torch.from_numpy(domain),    # [1, 768]
                     domain_num = torch.from_numpy(domain_num),    # [1,]
                     domain_embs = torch.from_numpy(domain_embs),    # [1, 16, 256]
