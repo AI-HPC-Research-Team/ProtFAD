@@ -10,9 +10,7 @@ Here, we introduce **ProtFAD**, a synergistic integration approach for protein f
 
 ## Environment
 
-python=3.8   
-
-pytorch=1.12.1
+python=3.8; pytorch=1.12.1
 
 ```shell
 pip install torch-geometric
@@ -23,11 +21,9 @@ pip install pandas omegaconf
 
 ## Data
 
-> [!NOTE]
->
-> The data will be made public soon.
+- The pretrained model checkpoint can be found in https://onedrive.live.com/?authkey=%21ACSJtIYP40Q8jPI&id=C3EC79DD757518A7%2124003&cid=C3EC79DD757518A7.
 
-****
+- The data for all tasks can be obtained in https://github.com/hehefan/Continuous-Discrete-Convolution.
 
 
 
@@ -54,6 +50,8 @@ python train_fold.py -C configs/[dataset]/[dataset]_mulpro_cl.yaml
 
 
 ## Citation
+
+If you find our work useful in your research, please consider citing:
 
 ```
 @article{wang2024protfad,
