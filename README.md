@@ -21,7 +21,9 @@ pip install pandas omegaconf
 
 ## Data
 
-- The pretrained model checkpoint can be found in https://onedrive.live.com/?authkey=%21ACSJtIYP40Q8jPI&id=C3EC79DD757518A7%2124003&cid=C3EC79DD757518A7.
+- The pretrained model checkpoint can be found in https://1drv.ms/f/c/c3ec79dd757518a7/UgCnGHV13XnsIIDDw10AAAAAACSJtIYP40Q8jPI.
+
+- Other data may be found in https://1drv.ms/f/c/c3ec79dd757518a7/UgCnGHV13XnsIIDDw10AAAAAACSJtIYP40Q8jPI.
 
 - The data for all tasks can be obtained in https://github.com/hehefan/Continuous-Discrete-Convolution.
 
